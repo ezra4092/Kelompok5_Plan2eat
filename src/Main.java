@@ -9,23 +9,43 @@ public class Main {
         System.out.println("          SIMULASI SISTEM PERPUSTAKAAN            ");
         System.out.println("==================================================\n");
 
-        // 1. Setup Data Genre
-        GenreBuku genre1 = new GenreBuku("Programming", "Buku bahasa pemrograman");
-        GenreBuku genre2 = new GenreBuku("Software Eng.", "Buku rekayasa perangkat lunak");
+        // ==========================================
+        // 1. SETUP DATA (Genre, Buku, Member, Staff)
+        // ==========================================
+        // Setup Data Genre
+        GenreBuku genreIT = new GenreBuku("G01", "Programming");
+        GenreBuku genreSE = new GenreBuku("G02", "Software Engineering");
+        GenreBuku genreFiksi = new GenreBuku("G03", "Fiksi");
 
-        // 2. Setup Data Buku (Superclass)
-        Buku buku1 = new Buku("B001", "Java for Dummies", "Barry Burd", genre1);
-        Buku buku2 = new Buku("B002", "Clean Code", "Robert C. Martin", genre2);
-        Buku buku3 = new Buku("B003", "Head First Java", "Kathy Sierra", genre1);
+        // Setup Data Buku (Superclass)
+        Buku buku1 = new Buku("B001", "Java for Dummies", "Barry Burd", genreIT);
+        Buku buku2 = new Buku("B002", "Clean Code", "Robert C. Martin", genreSE);
+        Buku buku3 = new Buku("B003", "Head First Java", "Kathy Sierra", genreIT);
 
         // Setup Data Member
-        Member member1 = new Member("M01", "Budi");
-        Member member2 = new Member("M02", "Siti");
+        Member member1 = new Member("M01", "Budi", "budi@email.com", "08123456789");
+        Member member2 = new Member("M02", "Siti", "siti@email.com", "08987654321");
+
+        // Setup Data Staff
+        Staff staff1 = new Staff("S01", "Andi", "andi@email.com", "08111111111");
+
 
         // ==========================================
-        // SKENARIO 1: PROSES PEMINJAMAN
+        // SKENARIO 1: PENCATATAN OLEH STAFF
         // ==========================================
-        System.out.println(">>> 1. PROSES PEMINJAMAN BUKU <<<");
+        System.out.println(">>> 1. PROSES PENCATATAN MEMBER OLEH STAFF <<<");
+        // Staff A (Andi) memasukkan data Member A (Budi) dan Member B (Siti) ke sistem
+        staff1.tambahPeminjam(member1.getNama());
+        staff1.tambahPeminjam(member2.getNama());
+        
+        // Menampilkan rekap member
+        staff1.tampilkanDaftarPeminjam();
+
+
+        // ==========================================
+        // SKENARIO 2: PROSES PEMINJAMAN
+        // ==========================================
+        System.out.println(">>> 2. PROSES PEMINJAMAN BUKU <<<");
         member1.pinjamBuku(buku1); 
         member1.pinjamBuku(buku2); 
         member2.pinjamBuku(buku3);
@@ -34,42 +54,40 @@ public class Main {
         member1.displayBuku();
         member2.displayBuku();
 
-        // ==========================================
-        // SKENARIO 2: TEST CASE GAGAL
-        // ==========================================
-        System.out.println("\n>>> 2. TEST CASE GAGAL (VALIDASI) <<<");
-        member1.pinjamBuku(buku1); // Budi minjem buku yang sama
-        member2.pinjamBuku(buku1); // Siti minjem buku yang sedang dipinjam Budi
 
         // ==========================================
-        // SKENARIO 3: STATUS BUKU SAAT INI
+        // SKENARIO 3: TEST CASE GAGAL
         // ==========================================
-        System.out.println("\n>>> 3. STATUS INVENTORY BUKU <<<");
-        System.out.println("- B001 (" + buku1.getJudulBuku() + ") : " + buku1.getStatus()); 
-        System.out.println("- B002 (" + buku2.getJudulBuku() + ") : " + buku2.getStatus()); 
-        System.out.println("- B003 (" + buku3.getJudulBuku() + ") : " + buku3.getStatus()); 
+        System.out.println(">>> 3. TEST CASE GAGAL (VALIDASI) <<<");
+        member1.pinjamBuku(buku1); // Budi minjem buku yang sudah dia pinjam
+        member2.pinjamBuku(buku1); // Siti nyoba minjem buku yang lagi dipinjem Budi
+
 
         // ==========================================
-        // SKENARIO 4: TABEL BUKU FISIK
+        // SKENARIO 4: STATUS BUKU SAAT INI
         // ==========================================
-        System.out.println("\n>>> 4. TABEL DATA BUKU FISIK <<<");
+        System.out.println("\n>>> 4. STATUS INVENTORY BUKU SAAT INI <<<");
+        System.out.println("- B001 (" + buku1.getJudulBuku() + ") \t: " + buku1.getStatus()); 
+        System.out.println("- B002 (" + buku2.getJudulBuku() + ") \t\t: " + buku2.getStatus()); 
+        System.out.println("- B003 (" + buku3.getJudulBuku() + ") \t: " + buku3.getStatus()); 
+
+
+        // ==========================================
+        // SKENARIO 5: TABEL DATA BUKU FISIK
+        // ==========================================
+        System.out.println("\n>>> 5. TABEL DATA BUKU FISIK <<<");
         
-        GenreBuku genreIT = new GenreBuku("Teknologi", "Buku seputar IT");
-        GenreBuku genreFiksi = new GenreBuku("Fiksi", "Novel dan Cerita");
-
         List<BukuFisik> daftarBuku = new ArrayList<>();
         
-        // Catatan: Saya tambahkan parameter tahun (misal 2024, 2008, 1980) di paling belakang
-        // Pastikan constructor BukuFisik kamu sudah menerima parameter tahunTerbit
+        // Asumsi urutan parameter di class BukuFisik: (id, judul, author, genre, rak, tahun)
         daftarBuku.add(new BukuFisik("B-001", "Struktur Data", "Thomas H", genreIT, "Rak-1", "Lorong A", "Baru"));
         daftarBuku.add(new BukuFisik("B-002", "Clean Code", "Robert C", genreIT, "Rak-2", "Lorong A", "Baik"));
         daftarBuku.add(new BukuFisik("F-001", "Bumi Manusia", "Pramoedya A", genreFiksi, "Rak-5", "Lorong C", "Rusak"));
 
-        // String garis pembatas dibuat persis 96 karakter agar ujungnya menutup tabel dengan rata
+        // String garis pembatas 
         String garisBatas = "------------------------------------------------------------------------------------------------";
         
         System.out.println(garisBatas);
-        // Header kolom dibuat Title Case agar terlihat profesional
         System.out.printf("| %-6s | %-20s | %-15s | %-15s | %-9s | %-12s |%n", 
                           "ID", "Judul Buku", "Penulis", "Genre", "No. Rak", "Tahun Terbit");
         System.out.println(garisBatas);
