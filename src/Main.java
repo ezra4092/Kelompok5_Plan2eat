@@ -3,105 +3,60 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
+        System.out.println("=== SIMULASI SISTEM PERPUSTAKAAN ===\n");
+
+        // 1. Setup Data Genre
+        GenreBuku gIT = new GenreBuku("G01", "Programming");
+        GenreBuku gSE = new GenreBuku("G02", "Software Eng.");
+        GenreBuku gfiksi = new GenreBuku("G03", "Fiksi");
         
-        // --- HEADER APLIKASI ---
-        System.out.println("==================================================");
-        System.out.println("          SIMULASI SISTEM PERPUSTAKAAN            ");
-        System.out.println("==================================================\n");
-
-        // ==========================================
-        // 1. SETUP DATA (Genre, Buku, Member, Staff)
-        // ==========================================
-        // Setup Data Genre
-        GenreBuku genreIT = new GenreBuku("G01", "Programming");
-        GenreBuku genreSE = new GenreBuku("G02", "Software Engineering");
-        GenreBuku genreFiksi = new GenreBuku("G03", "Fiksi");
-
-        // Setup Data Buku (Superclass)
-        Buku buku1 = new Buku("B001", "Java for Dummies", "Barry Burd", genreIT);
-        Buku buku2 = new Buku("B002", "Clean Code", "Robert C. Martin", genreSE);
-        Buku buku3 = new Buku("B003", "Head First Java", "Kathy Sierra", genreIT);
-
-        // Setup Data Member
-        Member member1 = new Member("M01", "Budi", "budi@email.com", "08123456789");
-        Member member2 = new Member("M02", "Siti", "siti@email.com", "08987654321");
-
-        // Setup Data Staff
-        Staff staff1 = new Staff("S01", "Andi", "andi@email.com", "08111111111");
-
-
-        // ==========================================
-        // SKENARIO 1: PENCATATAN OLEH STAFF
-        // ==========================================
-        System.out.println(">>> 1. PROSES PENCATATAN MEMBER OLEH STAFF <<<");
-        // Staff A (Andi) memasukkan data Member A (Budi) dan Member B (Siti) ke sistem
-        staff1.tambahPeminjam(member1.getNama());
-        staff1.tambahPeminjam(member2.getNama());
+        // Setup objek BukuFisik sesuai dengan parametermu: 
+        // (idBuku, judulBuku, penulis, genre, noRak, kategoriLorong, tahunTerbit)
+        BukuFisik b1 = new BukuFisik("B-001", "Java for Dummies", "Barry Burd", gIT, "Rak-1", "Lorong A", "2010");
+        BukuFisik b2 = new BukuFisik("B-002", "Clean Code", "Robert C.", gSE, "Rak-2", "Lorong A", "2008");
+        BukuFisik b3 = new BukuFisik("F-001", "Bumi Manusia", "Pramoedya A", gfiksi, "Rak-5", "Lorong C", "1980");
         
-        // Menampilkan rekap member
-        staff1.tampilkanDaftarPeminjam();
+        // Masukkan ke inventory
+        List<BukuFisik> rak = new ArrayList<>();
+        rak.add(b1);
+        rak.add(b2);
+        rak.add(b3);
 
+        Member m1 = new Member("M01", "Budi", "budi@email.com", "0811");
+        Member m2 = new Member("M02", "Siti", "siti@email.com", "0822");
+        Staff s1 = new Staff("S01", "Andi", "andi@email.com", "0833");
 
-        // ==========================================
-        // SKENARIO 2: PROSES PEMINJAMAN
-        // ==========================================
-        System.out.println(">>> 2. PROSES PEMINJAMAN BUKU <<<");
-        member1.pinjamBuku(buku1); 
-        member1.pinjamBuku(buku2); 
-        member2.pinjamBuku(buku3);
+        // 2. Pencatatan & Peminjaman
+        System.out.println("--- PENCATATAN & PEMINJAMAN ---");
+        s1.tambahPeminjam(m1.getNama());
+        s1.tambahPeminjam(m2.getNama());
         
-        System.out.println("\n[Daftar Buku di Tangan Member]");
-        member1.displayBuku();
-        member2.displayBuku();
+        m1.pinjamBuku(b1); 
+        m2.pinjamBuku(b2); 
+        m1.pinjamBuku(b1); // Test case gagal (Validasi)
 
+        System.out.println("\n--- DAFTAR BUKU DI TANGAN MEMBER ---");
+        m1.displayBuku();
+        m2.displayBuku();
 
-        // ==========================================
-        // SKENARIO 3: TEST CASE GAGAL
-        // ==========================================
-        System.out.println(">>> 3. TEST CASE GAGAL (VALIDASI) <<<");
-        member1.pinjamBuku(buku1); // Budi minjem buku yang sudah dia pinjam
-        member2.pinjamBuku(buku1); // Siti nyoba minjem buku yang lagi dipinjem Budi
-
-
-        // ==========================================
-        // SKENARIO 4: STATUS BUKU SAAT INI
-        // ==========================================
-        System.out.println("\n>>> 4. STATUS INVENTORY BUKU SAAT INI <<<");
-        System.out.println("- B001 (" + buku1.getJudulBuku() + ") \t: " + buku1.getStatus()); 
-        System.out.println("- B002 (" + buku2.getJudulBuku() + ") \t\t: " + buku2.getStatus()); 
-        System.out.println("- B003 (" + buku3.getJudulBuku() + ") \t: " + buku3.getStatus()); 
-
-
-        // ==========================================
-        // SKENARIO 5: TABEL DATA BUKU FISIK
-        // ==========================================
-        System.out.println("\n>>> 5. TABEL DATA BUKU FISIK <<<");
+        // 3. Tabel Buku Fisik (Tabel Lengkap + Status)
+        System.out.println("--- TABEL INVENTORY BUKU FISIK ---");
         
-        List<BukuFisik> daftarBuku = new ArrayList<>();
+        // Garis batas dilebarkan untuk nampung kolom Lorong dan Status
+        String batas = "-------------------------------------------------------------------------------------------------------------------";
+        System.out.println(batas);
         
-        // Asumsi urutan parameter di class BukuFisik: (id, judul, author, genre, rak, tahun)
-        daftarBuku.add(new BukuFisik("B-001", "Struktur Data", "Thomas H", genreIT, "Rak-1", "Lorong A", "Baru"));
-        daftarBuku.add(new BukuFisik("B-002", "Clean Code", "Robert C", genreIT, "Rak-2", "Lorong A", "Baik"));
-        daftarBuku.add(new BukuFisik("F-001", "Bumi Manusia", "Pramoedya A", genreFiksi, "Rak-5", "Lorong C", "Rusak"));
-
-        // String garis pembatas 
-        String garisBatas = "------------------------------------------------------------------------------------------------";
+        // Tambah header Lorong dan Status
+        System.out.printf("| %-5s | %-18s | %-12s | %-15s | %-6s | %-8s | %-5s | %-10s |%n", 
+                          "ID", "Judul", "Penulis", "Genre", "Rak", "Lorong", "Tahun", "Status");
+        System.out.println(batas);
         
-        System.out.println(garisBatas);
-        System.out.printf("| %-6s | %-20s | %-15s | %-15s | %-9s | %-12s |%n", 
-                          "ID", "Judul Buku", "Penulis", "Genre", "No. Rak", "Tahun Terbit");
-        System.out.println(garisBatas);
-
-        for (BukuFisik buku : daftarBuku) {
-            System.out.printf("| %-6s | %-20s | %-15s | %-15s | %-9s | %-12s |%n",
-                    buku.getIdBuku(),
-                    buku.getJudulBuku(),
-                    buku.getAuthor(), 
-                    buku.getGenre().getNamaGenre(),
-                    buku.getNoRak(),
-                    buku.getTahunTerbit() 
-            );
+        for (BukuFisik b : rak) {
+            // Pastikan method getter untuk lorong namanya getKategoriLorong() sesuai atributmu
+            System.out.printf("| %-5s | %-18s | %-12s | %-15s | %-6s | %-8s | %-5s | %-10s |%n",
+                    b.getIdBuku(), b.getJudulBuku(), b.getAuthor(), 
+                    b.getGenre().getNamaGenre(), b.getNoRak(), b.getKategoriLorong(), b.getTahunTerbit(), b.getStatus());
         }
-        System.out.println(garisBatas);
+        System.out.println(batas);
     }
 }
