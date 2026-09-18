@@ -1,7 +1,7 @@
 import java.util.List;
 import java.util.ArrayList;
 
-public class Staff extends Person {
+public abstract class Staff extends Person {
     private String idStaff;
     private List<String> daftarNamaPeminjam; // List array untuk menyimpan nama member
 
@@ -43,4 +43,6 @@ public class Staff extends Person {
         }
         System.out.println("--------------------------------------------------------------\n");
     }
+
+    public abstract void kerjakanTugas();
 }
