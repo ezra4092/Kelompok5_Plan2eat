@@ -44,19 +44,18 @@ public class Member extends Person {
         }
     }
 
-    public void displayBuku() {
-        System.out.println("\n--- Daftar Buku dipinjam oleh " + getNama() + " ---");
+    public void displayBuku(Pustakawan petugas) {
+        System.out.println("\n--- Daftar Buku dipinjam oleh " + getNama() + " (Dilayani oleh Pustakawan: " + petugas.getNama() + ") ---");
+        
         if (bukuList.isEmpty()) {
             System.out.println("Belum ada buku yang dipinjam.");
             return;
         }
         for (Buku buku : bukuList) {
-            // Update disini: Manggil nama genre dari objek buku -> genre -> namaGenre
             System.out.println("- [" + buku.getIdBuku() + "] " + buku.getJudulBuku() + 
                                " by " + buku.getAuthor() + 
                                " (Genre: " + buku.getGenre().getNamaGenre() + ")");
         }
         System.out.println("----------------------------------------\n");
     }
-
 }
