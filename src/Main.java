@@ -24,25 +24,25 @@ public class Main {
 
         Member m1 = new Member("M01", "Budi", "budi@email.com", "0811");
         Member m2 = new Member("M02", "Siti", "siti@email.com", "0822");
-        Staff s1 = new Staff("S01", "Andi", "andi@email.com", "0833");
+        Pustakawan p1 = new Pustakawan("S01", "Sekar", "sekar@email.com", "0833");
+        PetugasKeamanan pk1 = new PetugasKeamanan("S02", "Zayn", "zayn@email.com", "0844");
 
         // 2. Pencatatan & Peminjaman
         System.out.println("--- PENCATATAN & PEMINJAMAN ---");
-        s1.tambahPeminjam(m1.getNama());
-        s1.tambahPeminjam(m2.getNama());
+        p1.tambahPeminjam(m1.getNama());
+        p1.tambahPeminjam(m2.getNama());
         
         m1.pinjamBuku(b1); 
         m2.pinjamBuku(b2); 
         m1.pinjamBuku(b1); // Test case gagal (Validasi)
 
         System.out.println("\n--- DAFTAR BUKU DI TANGAN MEMBER ---");
-        m1.displayBuku();
-        m2.displayBuku();
+        m1.displayBuku(p1);
+        m2.displayBuku(p1);
 
         // 3. Tabel Buku Fisik (Tabel Lengkap + Status)
         System.out.println("--- TABEL INVENTORY BUKU FISIK ---");
         
-        // Garis batas dilebarkan untuk nampung kolom Lorong dan Status
         String batas = "-------------------------------------------------------------------------------------------------------------------";
         System.out.println(batas);
         
@@ -52,11 +52,15 @@ public class Main {
         System.out.println(batas);
         
         for (BukuFisik b : rak) {
-            // Pastikan method getter untuk lorong namanya getKategoriLorong() sesuai atributmu
             System.out.printf("| %-5s | %-18s | %-12s | %-15s | %-6s | %-8s | %-5s | %-10s |%n",
                     b.getIdBuku(), b.getJudulBuku(), b.getAuthor(), 
                     b.getGenre().getNamaGenre(), b.getNoRak(), b.getKategoriLorong(), b.getTahunTerbit(), b.getStatus());
         }
         System.out.println(batas);
+
+        System.out.println("--- AKTIVITAS STAFF ---");
+        p1.kerjakanTugas();
+        pk1.kerjakanTugas();
+        System.out.println();
     }
 }
