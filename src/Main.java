@@ -40,6 +40,14 @@ public class Main {
         m1.displayBuku(p1);
         m2.displayBuku(p1);
 
+        System.out.println("--- SIMULASI DONASI BUKU ---");
+        m1.serahkanDonasi("Pemrograman Web Modern", "Bagus", p1);
+        m2.serahkanDonasi("Struktur Data Lanjut", "Sangat Baik", p1);
+
+        System.out.println("--- SIMULASI PENGEMBALIAN BUKU ---");
+        m1.kembalikanBuku(b1); 
+        b1.prosesPengembalian(2); 
+
         // 3. Tabel Buku Fisik (Tabel Lengkap + Status)
         System.out.println("--- TABEL INVENTORY BUKU FISIK ---");
         
