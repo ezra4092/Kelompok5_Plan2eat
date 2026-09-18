@@ -1,7 +1,7 @@
 import java.util.List;
 import java.util.ArrayList;
 
-public class Member extends Person {
+public class Member extends Person implements DonasiBuku {
     private String id;
     private List<Buku> bukuList;
 
@@ -57,5 +57,14 @@ public class Member extends Person {
                                " (Genre: " + buku.getGenre().getNamaGenre() + ")");
         }
         System.out.println("----------------------------------------\n");
+    }
+    @Override
+public void serahkanDonasi(String judulBuku, String kondisiBuku, Pustakawan pustakawan) {
+    System.out.println("----------------------------------------\n");
+    System.out.println("Member: " + getNama());
+    System.out.println("Mendonasikan buku: " + judulBuku);
+    System.out.println("Kondisi: "+ kondisiBuku);
+    System.out.println("Dilayani oleh Pustakawan " + pustakawan.getNama() + ".");
+    System.out.println("----------------------------------------\n");
     }
 }
