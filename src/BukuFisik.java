@@ -1,4 +1,4 @@
-public class BukuFisik extends Buku {
+public class BukuFisik extends Buku implements PengembalianBuku {
     private String noRak;
     private String kategoriLorong; 
     private String tahunTerbit;  
